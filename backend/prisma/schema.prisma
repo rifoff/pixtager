@@ -1,0 +1,101 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Plan {
+  FREE
+  STARTER
+  PRO
+  AGENCY
+}
+
+enum JobStatus {
+  PENDING
+  PROCESSING
+  DONE
+  FAILED
+}
+
+enum SeoMode {
+  YANDEX_MAPS
+  YANDEX_IMAGES
+  GOOGLE_MAPS
+  GEO_SEO
+}
+
+model User {
+  id                String         @id @default(uuid())
+  email             String         @unique
+  passwordHash      String
+  name              String?
+  plan              Plan           @default(FREE)
+  quotaUsed         Int            @default(0)
+  quotaResetAt      DateTime       @default(now())
+  rebillId          String?
+  tinkoffCustomerId String?
+  createdAt         DateTime       @default(now())
+  updatedAt         DateTime       @updatedAt
+  jobs              Job[]
+  subscriptions     Subscription[]
+}
+
+model Job {
+  id         String      @id @default(uuid())
+  userId     String
+  user       User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  status     JobStatus   @default(PENDING)
+  totalFiles Int         @default(0)
+  processed  Int         @default(0)
+  zipUrl     String?
+  expiresAt  DateTime?
+  settings   JobSettings?
+  files      JobFile[]
+  createdAt  DateTime    @default(now())
+  updatedAt  DateTime    @updatedAt
+}
+
+model JobSettings {
+  id           String  @id @default(uuid())
+  jobId        String  @unique
+  job          Job     @relation(fields: [jobId], references: [id], onDelete: Cascade)
+  businessName String
+  address      String
+  city         String
+  country      String  @default("Россия")
+  author       String?
+  copyright    String?
+  niche        String?
+  keywords     String[]
+  mode         SeoMode @default(YANDEX_MAPS)
+  gpsLat       Float?
+  gpsLon       Float?
+}
+
+model JobFile {
+  id           String @id @default(uuid())
+  jobId        String
+  job          Job    @relation(fields: [jobId], references: [id], onDelete: Cascade)
+  originalName String
+  seoName      String?
+  altTag       String?
+  storageKey   String
+  status       String @default("pending")
+}
+
+model Subscription {
+  id           String   @id @default(uuid())
+  userId       String
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  plan         Plan
+  tinkoffSubId String?
+  rebillId     String?
+  status       String   @default("active")
+  periodEnd    DateTime
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}

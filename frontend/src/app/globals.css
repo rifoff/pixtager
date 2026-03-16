@@ -1,0 +1,64 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Unbounded:wght@700;900&family=Manrope:wght@300;400;500;600;700&display=swap');
+
+:root {
+  --font-manrope: 'Manrope';
+  --font-jetbrains: 'JetBrains Mono';
+  --font-unbounded: 'Unbounded';
+}
+
+* { box-sizing: border-box; }
+
+html {
+  background: #0a0a0b;
+  color: #f2efe9;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+::-webkit-scrollbar { width: 5px; height: 5px; }
+::-webkit-scrollbar-track { background: #0a0a0b; }
+::-webkit-scrollbar-thumb { background: #35353b; border-radius: 3px; }
+
+@layer components {
+  /* ── BUTTONS ── */
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 px-5 py-2.5
+           text-sm font-semibold rounded-lg cursor-pointer transition-all duration-150
+           font-sans border-0 outline-none;
+  }
+  .btn-primary  { @apply bg-accent text-black hover:bg-accent-2 active:scale-[.98]; }
+  .btn-secondary{ @apply bg-bg-3 text-txt border border-border-2 hover:border-txt-2 active:scale-[.98]; }
+  .btn-ghost    { @apply bg-transparent text-txt-2 border border-border hover:text-txt hover:border-border-2; }
+  .btn-danger   { @apply bg-transparent text-danger border border-danger/30 hover:bg-danger-dim; }
+  .btn-sm       { @apply px-3.5 py-1.5 text-xs; }
+  .btn-lg       { @apply px-7 py-3.5 text-base; }
+  .btn-xl       { @apply px-9 py-4 text-lg font-bold; }
+
+  /* ── INPUTS ── */
+  .input {
+    @apply w-full bg-bg-3 border border-border rounded-lg px-3.5 py-2.5
+           text-sm text-txt font-sans placeholder:text-txt-3
+           outline-none transition-colors focus:border-accent;
+  }
+  .label {
+    @apply block text-[11px] font-semibold uppercase tracking-widest text-txt-2 mb-1.5;
+  }
+
+  /* ── CARDS ── */
+  .card    { @apply bg-bg-2 border border-border rounded-xl p-5; }
+  .card-sm { @apply bg-bg-2 border border-border rounded-lg p-4; }
+
+  /* ── BADGES ── */
+  .badge        { @apply inline-flex items-center font-mono text-[10px] font-bold px-2 py-0.5 rounded; }
+  .badge-accent { @apply bg-accent/10 text-accent border border-accent/25; }
+  .badge-ok     { @apply bg-ok-dim text-ok border border-ok/25; }
+  .badge-gray   { @apply bg-bg-3 text-txt-3 border border-border; }
+  .badge-pro    { @apply bg-accent text-black; }
+
+  /* ── DIVIDER ── */
+  .divider { @apply h-px bg-border my-5; }
+}
