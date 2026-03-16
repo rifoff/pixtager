@@ -36,22 +36,34 @@ export function AuthForm() {
     { label: 'Надёжный', color: '#4caf82' },
   ]
 
-  async function submit() {
-    if (!email.trim()) return showToast('Введите email', 'err')
-    if (!pass)         return showToast('Введите пароль', 'err')
-    if (tab === 'reg') {
-      if (pass !== pass2) return showToast('Пароли не совпадают', 'err')
-      if (pass.length < 8) return showToast('Пароль минимум 8 символов', 'err')
-      if (!agree) return showToast('Примите условия использования', 'err')
-    }
-    setLoading(true)
-    // In production: POST /api/auth/login or /register
-    await new Promise(r => setTimeout(r, 700))
-    setUser({ id: 'demo', email, plan: 'FREE', quotaUsed: 0, token: 'demo-token' })
-    showToast(tab === 'login' ? 'Добро пожаловать!' : 'Аккаунт создан! 🎉', 'ok')
-    setLoading(false)
-    router.push('/dashboard')
+async function submit() {
+  if (!email.trim()) return showToast('Введите email', 'err')
+  if (!pass)         return showToast('Введите пароль', 'err')
+  if (tab === 'reg') {
+    if (pass !== pass2) return showToast('Пароли не совпадают', 'err')
+    if (pass.length < 8) return showToast('Пароль минимум 8 символов', 'err')
+    if (!agree) return showToast('Примите условия использования', 'err')
   }
+  setLoading(true)
+  try {
+    const endpoint = tab === 'login' ? '/api/auth/login' : '/api/auth/register'
+    const res = await fetch(endpoint, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, password: pass }),
+    })
+    const data = await res.json()
+    if (!res.ok) return showToast(data.error || 'Ошибка', 'err')
+    localStorage.setItem('token', data.token)
+    setUser({ id: data.userId, email, plan: data.plan, quotaUsed: data.quotaUsed ?? 0, token: data.token })
+    showToast(tab === 'login' ? 'Добро пожаловать!' : 'Аккаунт создан! 🎉', 'ok')
+    router.push('/dashboard')
+  } catch {
+    showToast('Ошибка соединения с сервером', 'err')
+  } finally {
+    setLoading(false)
+  }
+}
 
   return (
     <div className="w-full max-w-[420px] relative z-10">
