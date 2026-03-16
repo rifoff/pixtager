@@ -1,14 +1,9 @@
+'use client'
 // src/app/page.tsx
-import type { Metadata } from 'next'
 import Link from 'next/link'
 import { LandingNicheDemo } from '@/components/pages/LandingNicheDemo'
 import { LandingFaq } from '@/components/pages/LandingFaq'
 import { LandingClient } from '@/components/pages/LandingClient'
-
-export const metadata: Metadata = {
-  title: 'PixTager — Массовая SEO-прошивка фотографий',
-  description: 'Прошивайте IPTC-метаданные, GPS и SEO-данные в фотографии для Яндекс Карт, Яндекс Картинок и Google Maps.',
-}
 
 const HOW_STEPS = [
   { n: '01', title: 'Загрузите фотографии', body: 'Drag & drop до 5 000 фото. JPG, JPEG, PNG до 15 МБ. Пакетная загрузка без ограничений на Agency-тарифе.' },
@@ -255,13 +250,6 @@ export default function LandingPage() {
         </div>
         <div>© 2025 PixTager · Данные хранятся в РФ</div>
       </footer>
-
-      <style jsx global>{`
-        @keyframes heroFadeUp {
-          from { opacity: 0; transform: translateY(28px); }
-          to   { opacity: 1; transform: none; }
-        }
-      `}</style>
     </>
   )
 }
