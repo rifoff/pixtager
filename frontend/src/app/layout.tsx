@@ -1,5 +1,6 @@
 // src/app/layout.tsx
 import type { Metadata } from 'next'
+import type { ReactNode } from 'react'
 import './globals.css'
 
 export const metadata: Metadata = {
@@ -8,7 +9,7 @@ export const metadata: Metadata = {
   keywords: ['SEO фото', 'IPTC метаданные', 'Яндекс Карты', 'Google Maps', 'GPS EXIF'],
 }
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="ru">
       <body className="min-h-screen bg-bg font-sans text-txt antialiased">
