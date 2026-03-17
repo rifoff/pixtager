@@ -21,9 +21,8 @@ type StepId = typeof STEPS[number]['id']
 
 export function AppShell() {
   const { user, appStep, setAppStep, files } = useStore()
-  const plan = PLANS[user?.plan ?? 'FREE']
-  const quota = plan.quota
-  const used  = user?.quotaUsed ?? 0
+  const planKey = ((user?.plan ?? 'FREE').toUpperCase()) as keyof typeof PLANS
+  const quota = PLANS[planKey]?.quota ?? 10
 
   const stepIdx = STEPS.findIndex(s => s.id === appStep)
 

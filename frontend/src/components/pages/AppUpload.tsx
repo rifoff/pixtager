@@ -8,7 +8,8 @@ import clsx from 'clsx'
 
 export function AppUpload() {
   const { files, addFiles, removeFile, clearFiles, setAppStep, user } = useStore()
-  const quota = PLANS[user?.plan ?? 'FREE'].quota
+  const planKey = ((user?.plan ?? 'FREE').toUpperCase()) as keyof typeof PLANS
+  const quota = PLANS[planKey]?.quota ?? 10
 
   const handleFiles = useCallback((list: FileList | File[]) => {
     const valid = Array.from(list).filter(f => {

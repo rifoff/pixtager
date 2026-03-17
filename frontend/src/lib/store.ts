@@ -80,7 +80,8 @@ export const useStore = create<AppStore>()(
 
       files: [],
       addFiles: (newFiles) => set(state => {
-        const quota = PLANS[state.user?.plan ?? 'FREE'].quota
+        const planKey = ((state.user?.plan ?? 'FREE').toUpperCase()) as PlanKey
+        const quota = PLANS[planKey]?.quota ?? 10
         return { files: [...state.files, ...newFiles].slice(0, quota) }
       }),
       removeFile: (i) => set(state => ({ files: state.files.filter((_, idx) => idx !== i) })),
