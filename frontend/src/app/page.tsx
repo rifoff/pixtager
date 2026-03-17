@@ -38,7 +38,6 @@ const PLANS = [
 const BEFORE_ROWS = [['Имя файла','IMG_3345.jpg'],['IPTC Title','—'],['IPTC Keywords','—'],['GPS координаты','—'],['ALT тег','—']]
 const AFTER_ROWS  = [['Имя файла','stomatologiya-moskva.jpg'],['IPTC Title','Стоматология Улыбка'],['IPTC Keywords','стоматология, дентист…'],['GPS координаты','55.7558°, 37.6176°'],['ALT тег','Стоматология в Москве']]
 const MARQUEE     = ['IPTC Keywords','GPS в EXIF','Яндекс Карты','Яндекс Картинки','Google Maps','GEO SEO','SEO-имя файла','ALT-теги','ZIP-архив','XMP метаданные','152-ФЗ','Т-Банк оплата']
-const STATS       = [['9','ниш бизнеса'],['4','SEO-режима'],['5 000+','фото/мес Agency'],['54-ФЗ','соблюдается']]
 const NAV_LINKS   = [['#how','Как работает'],['#features','Возможности'],['#pricing','Тарифы'],['#faq','FAQ']]
 
 export default function LandingPage() {
@@ -58,27 +57,18 @@ export default function LandingPage() {
             <span className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse" />
             SEO-инструмент для локального бизнеса
           </div>
-          <h1 className="font-display text-[clamp(36px,6.5vw,80px)] font-black leading-[1.05] tracking-[-0.04em] mb-6">
-            Прошивайте метаданные<br />
-            <span style={{backgroundImage:'linear-gradient(135deg,#e8b44a 0%,#f5d78e 50%,#e8b44a 100%)',WebkitBackgroundClip:'text',WebkitTextFillColor:'transparent',backgroundClip:'text'}}>в сотни фото за минуты</span>
+          <h1 className="font-display text-[clamp(28px,4.5vw,58px)] font-black leading-[1.05] tracking-[-0.04em] mb-6">
+            Прошивайте метаданные в сотни фото —<br />
+            <span style={{backgroundImage:'linear-gradient(135deg,#e8b44a 0%,#f5d78e 50%,#e8b44a 100%)',WebkitBackgroundClip:'text',WebkitTextFillColor:'transparent',backgroundClip:'text'}}>автоматически, за минуты</span>
           </h1>
-          <p className="text-[clamp(15px,2vw,19px)] text-txt-2 font-light leading-relaxed max-w-2xl mx-auto mb-10">
-            Автоматически записывает IPTC-метаданные, GPS-координаты и SEO-данные.<br className="hidden sm:block" />
-            Ваши фото попадают в топ Яндекс Карт, Яндекс Картинок и Google Maps.
+          <p className="text-[clamp(14px,1.6vw,17px)] text-txt-2 font-light leading-relaxed max-w-2xl mx-auto mb-10">
+            Автоматически записывает IPTC-метаданные, GPS-координаты и SEO-данные. Ваши фото попадают в топ Яндекс Карт, Яндекс Картинок и Google Maps.
           </p>
           <div className="flex gap-3 justify-center flex-wrap">
             <Link href="/auth" className="btn btn-primary btn-xl" style={{boxShadow:'0 0 40px rgba(232,180,74,0.28)'}}>
               Попробовать бесплатно →
             </Link>
             <a href="#how" className="btn btn-ghost btn-xl">Как это работает</a>
-          </div>
-          <div className="flex gap-6 sm:gap-10 justify-center mt-16 pt-10 border-t border-border flex-wrap">
-            {STATS.map(([n, l]) => (
-              <div key={l} className="text-center">
-                <div className="font-display text-2xl font-bold text-accent">{n}</div>
-                <div className="text-xs text-txt-3 mt-1">{l}</div>
-              </div>
-            ))}
           </div>
         </div>
       </section>
