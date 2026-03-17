@@ -1,26 +1,54 @@
 // src/components/pages/DashboardJobs.tsx
 'use client'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { StatusBadge } from '@/components/ui'
 import { showToast } from '@/components/ui'
+import { useStore } from '@/lib/store'
 
-const ALL_JOBS = [
-  { id:'j1', business:'Стоматология Улыбка', address:'ул. Тверская 10, Москва',        files:8,  mode:'YANDEX_MAPS',   niche:'Стоматология', status:'done',       date:'15.03.2025', zip:true },
-  { id:'j2', business:'Кафе Белый медведь',  address:'Невский пр. 45, СПб',             files:23, mode:'YANDEX_IMAGES', niche:'Ресторан',      status:'done',       date:'12.03.2025', zip:true },
-  { id:'j3', business:'ЖК Садовый',          address:'ул. Ленина 5, Екатеринбург',      files:5,  mode:'GOOGLE_MAPS',   niche:'Недвижимость',  status:'processing', date:'16.03.2025', zip:false },
-  { id:'j4', business:'Фитнес Форма',        address:'пр. Мира 12, Казань',             files:14, mode:'GEO_SEO',       niche:'Фитнес',        status:'done',       date:'10.03.2025', zip:true },
-  { id:'j5', business:'Клиника Здоровье',    address:'ул. Садовая 3, Краснодар',        files:31, mode:'YANDEX_MAPS',   niche:'Клиника',       status:'failed',     date:'08.03.2025', zip:false },
-]
+const API = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000'
 
 const MODE_SHORT: Record<string, string> = {
-  YANDEX_MAPS:'Я.Карты', YANDEX_IMAGES:'Я.Картинки', GOOGLE_MAPS:'G.Maps', GEO_SEO:'GEO SEO',
+  YANDEX_MAPS: 'Я.Карты',
+  YANDEX_IMAGES: 'Я.Картинки',
+  GOOGLE_MAPS: 'G.Maps',
+  GEO_SEO: 'GEO SEO',
+}
+
+interface Job {
+  id: string
+  status: string
+  totalFiles: number
+  processed: number
+  zipUrl: string | null
+  createdAt: string
+  settings?: {
+    businessName: string
+    address: string
+    niche: string | null
+    mode: string
+  } | null
 }
 
 export function DashboardJobs() {
+  const { user } = useStore()
+  const [jobs, setJobs] = useState<Job[]>([])
+  const [loading, setLoading] = useState(true)
   const [filter, setFilter] = useState<string>('all')
 
-  const filtered = filter === 'all' ? ALL_JOBS : ALL_JOBS.filter(j => j.status === filter)
+  useEffect(() => {
+    if (!user?.token) return
+    fetch(`${API}/api/jobs`, {
+      headers: { Authorization: `Bearer ${user.token}` },
+    })
+      .then(r => r.json())
+      .then(data => { setJobs(Array.isArray(data) ? data : []); setLoading(false) })
+      .catch(() => { showToast('Ошибка загрузки заданий', 'err'); setLoading(false) })
+  }, [user?.token])
+
+  const filtered = filter === 'all' ? jobs : jobs.filter(j => j.status.toLowerCase() === filter)
+
+  const fmtDate = (iso: string) => new Date(iso).toLocaleDateString('ru-RU')
 
   return (
     <div>
@@ -40,16 +68,27 @@ export function DashboardJobs() {
             }`}>
             {label}
             <span className="ml-2 font-mono text-[10px] opacity-70">
-              {val === 'all' ? ALL_JOBS.length : ALL_JOBS.filter(j => j.status === val).length}
+              {val === 'all' ? jobs.length : jobs.filter(j => j.status.toLowerCase() === val).length}
             </span>
           </button>
         ))}
       </div>
 
-      {filtered.length === 0 ? (
+      {loading ? (
+        <div className="bg-bg-2 border border-border rounded-xl p-14 text-center text-txt-3">
+          Загрузка...
+        </div>
+      ) : filtered.length === 0 ? (
         <div className="bg-bg-2 border border-border rounded-xl p-14 text-center">
           <div className="text-4xl mb-4 opacity-30">⚡</div>
-          <div className="text-[15px] font-semibold text-txt-2 mb-2">Нет заданий в этом статусе</div>
+          <div className="text-[15px] font-semibold text-txt-2 mb-2">
+            {jobs.length === 0 ? 'Заданий пока нет' : 'Нет заданий в этом статусе'}
+          </div>
+          {jobs.length === 0 && (
+            <Link href="/app" className="btn btn-primary btn-sm mt-4 inline-flex">
+              Создать первое задание
+            </Link>
+          )}
         </div>
       ) : (
         <div className="bg-bg-2 border border-border rounded-xl overflow-hidden">
@@ -65,21 +104,23 @@ export function DashboardJobs() {
               {filtered.map(job => (
                 <tr key={job.id} className="hover:bg-bg-3 transition-colors group">
                   <td className="px-4 py-3.5 border-b border-border">
-                    <div className="text-[13px] font-medium">{job.business}</div>
-                    <div className="font-mono text-[11px] text-txt-3 mt-0.5 truncate max-w-[220px]">{job.address}</div>
+                    <div className="text-[13px] font-medium">{job.settings?.businessName || '—'}</div>
+                    <div className="font-mono text-[11px] text-txt-3 mt-0.5 truncate max-w-[220px]">{job.settings?.address || '—'}</div>
                   </td>
-                  <td className="px-4 py-3.5 border-b border-border font-mono text-[13px] text-accent">{job.files}</td>
-                  <td className="px-4 py-3.5 border-b border-border text-[12px] text-txt-3">{MODE_SHORT[job.mode]}</td>
-                  <td className="px-4 py-3.5 border-b border-border text-[12px] text-txt-2">{job.niche}</td>
-                  <td className="px-4 py-3.5 border-b border-border"><StatusBadge status={job.status} /></td>
-                  <td className="px-4 py-3.5 border-b border-border font-mono text-[11px] text-txt-3">{job.date}</td>
+                  <td className="px-4 py-3.5 border-b border-border font-mono text-[13px] text-accent">{job.totalFiles}</td>
+                  <td className="px-4 py-3.5 border-b border-border text-[12px] text-txt-3">{MODE_SHORT[job.settings?.mode || ''] || '—'}</td>
+                  <td className="px-4 py-3.5 border-b border-border text-[12px] text-txt-2">{job.settings?.niche || '—'}</td>
+                  <td className="px-4 py-3.5 border-b border-border"><StatusBadge status={job.status.toLowerCase()} /></td>
+                  <td className="px-4 py-3.5 border-b border-border font-mono text-[11px] text-txt-3">{fmtDate(job.createdAt)}</td>
                   <td className="px-4 py-3.5 border-b border-border">
                     <div className="flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                      {job.zip && (
-                        <button className="btn btn-ghost btn-sm" onClick={() => showToast('Скачивание ZIP...', 'ok')}>↓ ZIP</button>
+                      {job.zipUrl && (
+                        <a href={`${API}/api/jobs/${job.id}/download`}
+                          className="btn btn-ghost btn-sm">↓ ZIP</a>
                       )}
-                      {job.status === 'failed' && (
-                        <button className="btn btn-ghost btn-sm" onClick={() => showToast('Задание поставлено в очередь повторно', 'ok')}>↺</button>
+                      {job.status === 'FAILED' && (
+                        <button className="btn btn-ghost btn-sm"
+                          onClick={() => showToast('Повтор пока недоступен', 'info')}>↺</button>
                       )}
                     </div>
                   </td>
@@ -90,11 +131,10 @@ export function DashboardJobs() {
         </div>
       )}
 
-      {/* Summary */}
       <div className="flex gap-4 mt-5 text-[12px] text-txt-3">
-        <span>Всего фото обработано: <span className="text-accent font-mono font-bold">{ALL_JOBS.reduce((s,j)=>s+j.files,0)}</span></span>
+        <span>Всего фото: <span className="text-accent font-mono font-bold">{jobs.reduce((s,j) => s + j.totalFiles, 0)}</span></span>
         <span>·</span>
-        <span>Заданий: <span className="font-mono font-bold text-txt-2">{ALL_JOBS.length}</span></span>
+        <span>Заданий: <span className="font-mono font-bold text-txt-2">{jobs.length}</span></span>
       </div>
     </div>
   )
