@@ -57,8 +57,8 @@ export default function LandingPage() {
             <span className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse" />
             SEO-инструмент для локального бизнеса
           </div>
-          <h1 className="font-display text-[clamp(28px,4.5vw,58px)] font-black leading-[1.05] tracking-[-0.04em] mb-6">
-            Прошивайте метаданные в сотни фото —<br />
+          <h1 className="font-display text-[clamp(22px,3.5vw,48px)] font-black leading-[1.05] tracking-[-0.04em] mb-6">
+            Прошивайте метаданные в сотни фото —
             <span style={{backgroundImage:'linear-gradient(135deg,#e8b44a 0%,#f5d78e 50%,#e8b44a 100%)',WebkitBackgroundClip:'text',WebkitTextFillColor:'transparent',backgroundClip:'text'}}>автоматически, за минуты</span>
           </h1>
           <p className="text-[clamp(14px,1.6vw,17px)] text-txt-2 font-light leading-relaxed max-w-2xl mx-auto mb-10">
