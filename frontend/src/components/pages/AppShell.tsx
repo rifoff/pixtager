@@ -38,7 +38,12 @@ export function AppShell() {
 
       {/* Topbar */}
       <header className="sticky top-0 z-50 flex items-center justify-between px-7 h-[52px] border-b border-border bg-bg/90 backdrop-blur-xl">
-        <Logo />
+      <div className="flex items-center gap-4">
+          <Link href="/dashboard" className="text-txt-3 hover:text-txt transition-colors text-sm flex items-center gap-1.5">
+           ← Кабинет
+          </Link>
+          <Logo />
+      </div>
         <div className="flex items-center gap-3">
           <div className="hidden sm:flex flex-col items-end gap-0.5">
             <span className="font-mono text-[11px] text-txt-3">{files.length} / {quota} фото</span>
