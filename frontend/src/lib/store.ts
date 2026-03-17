@@ -1,6 +1,6 @@
 // src/lib/store.ts
 import { create } from 'zustand'
-import { persist } from 'zustand/middleware'
+import { persist, createJSONStorage } from 'zustand/middleware'
 import type { PlanKey, SeoModeKey } from './constants'
 import { PLANS } from './constants'
 
@@ -39,26 +39,21 @@ export interface ProcessedFile {
 
 // ── Store ─────────────────────────────────────────────────
 interface AppStore {
-  // Auth
   user: User | null
   setUser: (u: User | null) => void
   logout: () => void
 
-  // App wizard
   appStep: 'upload' | 'settings' | 'process' | 'download'
   setAppStep: (s: AppStore['appStep']) => void
 
-  // Files
   files: File[]
   addFiles: (f: File[]) => void
   removeFile: (i: number) => void
   clearFiles: () => void
 
-  // Settings
   settings: SeoSettings
   updateSettings: (s: Partial<SeoSettings>) => void
 
-  // Processing
   jobId: string | null
   jobStatus: 'idle' | 'processing' | 'done' | 'failed'
   progress: number
@@ -76,16 +71,13 @@ interface AppStore {
 export const useStore = create<AppStore>()(
   persist(
     (set, get) => ({
-      // Auth
       user: null,
       setUser: (user) => set({ user }),
       logout: () => set({ user: null }),
 
-      // Wizard
       appStep: 'upload',
       setAppStep: (appStep) => set({ appStep }),
 
-      // Files
       files: [],
       addFiles: (newFiles) => set(state => {
         const quota = PLANS[state.user?.plan ?? 'FREE'].quota
@@ -94,7 +86,6 @@ export const useStore = create<AppStore>()(
       removeFile: (i) => set(state => ({ files: state.files.filter((_, idx) => idx !== i) })),
       clearFiles: () => set({ files: [] }),
 
-      // Settings
       settings: {
         businessName: '', address: '', city: '', country: 'Россия',
         author: '', copyright: '', niche: '', keywords: [],
@@ -102,7 +93,6 @@ export const useStore = create<AppStore>()(
       },
       updateSettings: (s) => set(state => ({ settings: { ...state.settings, ...s } })),
 
-      // Processing
       jobId: null,
       jobStatus: 'idle',
       progress: 0,
@@ -122,6 +112,16 @@ export const useStore = create<AppStore>()(
     {
       name: 'pixtager-store',
       partialize: (state) => ({ user: state.user, settings: state.settings }),
+      storage: createJSONStorage(() => {
+        if (typeof window === 'undefined') {
+          return {
+            getItem: () => null,
+            setItem: () => {},
+            removeItem: () => {},
+          }
+        }
+        return localStorage
+      }),
     }
   )
 )
