@@ -68,7 +68,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
           })}
 
           <div className="mt-auto pt-4 border-t border-border flex flex-col gap-1">
-            <Link href="/app"
+            <Link href="/dashboard"
               className="flex items-center gap-2.5 px-3 py-2.5 rounded-lg text-[13px] font-medium text-accent hover:bg-accent/8 transition-colors">
               <span className="text-[15px] w-5 text-center">→</span>
               Открыть приложение
