@@ -1,9 +1,7 @@
-// src/components/pages/AppShell.tsx
 'use client'
 import Link from 'next/link'
 import { useStore } from '@/lib/store'
 import { PLANS } from '@/lib/constants'
-import { Logo, ToastProvider } from '@/components/ui'
 import { AppUpload }   from './AppUpload'
 import { AppSettings } from './AppSettings'
 import { AppProcess }  from './AppProcess'
@@ -34,16 +32,14 @@ export function AppShell() {
 
   return (
     <div className="min-h-screen flex flex-col bg-bg">
-      <ToastProvider />
-
       {/* Topbar */}
       <header className="sticky top-0 z-50 flex items-center justify-between px-7 h-[52px] border-b border-border bg-bg/90 backdrop-blur-xl">
-      <div className="flex items-center gap-4">
+        <div className="flex items-center gap-4">
           <Link href="/dashboard" className="text-txt-2 hover:text-txt transition-colors text-sm flex items-center gap-1.5 border border-border px-3 py-1.5 rounded-lg hover:border-border-2">
-          ← Кабинет
+            ← Кабинет
           </Link>
-          <Logo />
-      </div>
+          <span className="font-bold text-txt">● Pix<span className="font-light">Tager</span></span>
+        </div>
         <div className="flex items-center gap-3">
           <div className="hidden sm:flex flex-col items-end gap-0.5">
             <span className="font-mono text-[11px] text-txt-3">{files.length} / {quota} фото</span>
