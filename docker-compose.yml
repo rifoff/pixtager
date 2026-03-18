@@ -1,15 +1,18 @@
 version: '3.9'
 
+networks:
+  app:
+    driver: bridge
+
 services:
   postgres:
     image: postgres:16-alpine
     restart: unless-stopped
+    networks: [app]
     environment:
       POSTGRES_DB: pixtager
       POSTGRES_USER: pixtager
       POSTGRES_PASSWORD: password
-    ports:
-      - "5432:5432"
     volumes:
       - pgdata:/var/lib/postgresql/data
     healthcheck:
@@ -21,8 +24,7 @@ services:
   redis:
     image: redis:7-alpine
     restart: unless-stopped
-    ports:
-      - "6379:6379"
+    networks: [app]
     command: redis-server --save 60 1 --loglevel warning
     volumes:
       - redisdata:/data
@@ -37,8 +39,7 @@ services:
       context: ./backend
       dockerfile: Dockerfile
     restart: unless-stopped
-    ports:
-      - "4000:4000"
+    networks: [app]
     env_file: .env
     environment:
       PORT: 4000
@@ -59,6 +60,7 @@ services:
       context: ./backend
       dockerfile: Dockerfile
     restart: unless-stopped
+    networks: [app]
     command: node dist/workers/imageWorker.js
     env_file: .env
     environment:
@@ -79,6 +81,7 @@ services:
       context: ./frontend
       dockerfile: Dockerfile
     restart: unless-stopped
+    networks: [app]
     env_file: .env
     environment:
       NEXT_PUBLIC_API_URL: https://pixtager.ru/api-backend
@@ -88,6 +91,7 @@ services:
   nginx:
     image: nginx:alpine
     restart: unless-stopped
+    networks: [app]
     ports:
       - "80:80"
     volumes:
