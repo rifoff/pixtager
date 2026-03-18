@@ -1,10 +1,10 @@
 // src/lib/queue.ts
 import { Queue } from 'bullmq'
-import Redis from 'ioredis'
+import IORedis from 'ioredis'
 
 const REDIS_URL = process.env.REDIS_URL || 'redis://redis:6379'
 
-export const redisConnection = new Redis(REDIS_URL, {
+export const redisConnection = new IORedis(REDIS_URL, {
   maxRetriesPerRequest: null,
 })
 
