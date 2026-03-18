@@ -168,7 +168,13 @@ const worker = new Worker<ProcessJobPayload>(
       where: { id: jobId },
       data: { status: 'DONE', zipUrl, processed },
     })
-
+      const job = await prisma.job.findUnique({ where: { id: jobId }, select: { userId: true } })
+      if (job?.userId){
+        await prisma.user.update({
+          where: { id: job.userId },  
+          data: { quotaUsed: { increment: processed } },
+        })
+      }
     log(`Задание ${jobId} завершено. Обработано: ${processed} файлов.`)
     return { jobId, processed, zipPath }
   },
