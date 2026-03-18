@@ -5,12 +5,19 @@ export async function startJob(files: File[], settings: object, userId: string) 
   const form = new FormData()
   files.forEach(f => form.append('files', f))
   form.append('settings', JSON.stringify(settings))
+
   const res = await fetch(`${BASE}/upload/start`, {
     method: 'POST',
-    headers: { 'x-user-id': userId },
+    headers: {
+      'x-user-id': userId,
+      // НЕ устанавливаем Content-Type — браузер сам добавит boundary
+    },
     body: form,
   })
-  if (!res.ok) throw new Error((await res.json()).error || 'Ошибка загрузки')
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({ error: 'Ошибка загрузки' }))
+    throw new Error(err.error || 'Ошибка загрузки')
+  }
   return res.json() as Promise<{ jobId: string; fileCount: number }>
 }
 
