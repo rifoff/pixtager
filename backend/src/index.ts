@@ -14,7 +14,7 @@ const app = Fastify({
 })
 
 await app.register(cors, {
-  origin: process.env.FRONTEND_URL || 'http://localhost:3000',
+  origin: ['https://pixtager.ru', 'https://www.pixtager.ru', 'http://localhost:3000'],
   credentials: true,
 })
 await app.register(rateLimit, { max: 100, timeWindow: '1 minute' })
