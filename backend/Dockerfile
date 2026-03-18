@@ -1,7 +1,7 @@
 FROM node:20-alpine
 
 # Install ExifTool (required for IPTC/EXIF metadata writing)
-RUN apk add --no-cache perl exiftool
+RUN apk add --no-cache perl exiftool openssl libssl3
 
 WORKDIR /app
 
