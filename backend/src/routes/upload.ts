@@ -53,7 +53,7 @@ export const uploadRoutes: FastifyPluginAsync = async (app) => {
         const chunks: Buffer[] = []
         for await (const chunk of part.file) chunks.push(chunk)
         const buf = Buffer.concat(chunks)
-        if (!['image/jpeg', 'image/png'].includes(part.mimetype)) continue
+        if (!part.mimetype.startsWith('image/')) continue
         if (buf.length > 15 * 1024 * 1024) continue
         files.push({ name: part.filename, data: buf, mime: part.mimetype })
       } else {
