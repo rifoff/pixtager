@@ -41,7 +41,8 @@ services:
       - "4000:4000"
     env_file: .env
     environment:
-      DATABASE_URL: postgresql://pixtager:password@postgres:5432/pixtager
+      PORT: 4000
+      DATABASE_URL: postgresql://pixtager:Petr2004-@postgres:5432/pixtager
       REDIS_URL: redis://redis:6379
       UPLOAD_DIR: /app/uploads
       NODE_ENV: production
@@ -61,7 +62,7 @@ services:
     command: node dist/workers/imageWorker.js
     env_file: .env
     environment:
-      DATABASE_URL: postgresql://pixtager:password@postgres:5432/pixtager
+      DATABASE_URL: postgresql://pixtager:Petr2004-@postgres:5432/pixtager
       REDIS_URL: redis://redis:6379
       UPLOAD_DIR: /app/uploads
       NODE_ENV: production
@@ -78,12 +79,21 @@ services:
       context: ./frontend
       dockerfile: Dockerfile
     restart: unless-stopped
-    ports:
-      - "3000:3000"
     env_file: .env
     environment:
-      NEXT_PUBLIC_API_URL: https://pixtager.ru
+      NEXT_PUBLIC_API_URL: https://pixtager.ru/api-backend
     depends_on:
+      - backend
+
+  nginx:
+    image: nginx:alpine
+    restart: unless-stopped
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - frontend
       - backend
 
 volumes:
