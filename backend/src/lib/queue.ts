@@ -1,15 +1,17 @@
 // src/lib/queue.ts
 import { Queue } from 'bullmq'
-import { Redis } from 'ioredis'
+import Redis from 'ioredis'
 
-export const redisConnection = new Redis(process.env.REDIS_URL || 'redis://localhost:6379', {
-  maxRetriesPerRequest: null, // Required by BullMQ
+const REDIS_URL = process.env.REDIS_URL || 'redis://redis:6379'
+
+export const redisConnection = new Redis(REDIS_URL, {
+  maxRetriesPerRequest: null,
 })
 
 export const imageQueue = new Queue('image-processing', {
-  connection: redisConnection,
+  connection: redisConnection as any,
   defaultJobOptions: {
-    removeOnComplete: { age: 3600 }, // keep completed jobs 1h
+    removeOnComplete: { age: 3600 },
     removeOnFail: { age: 86400 },
   },
 })

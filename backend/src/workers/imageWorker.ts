@@ -173,7 +173,7 @@ const worker = new Worker<ProcessJobPayload>(
     return { jobId, processed, zipPath }
   },
   {
-    connection: redisConnection,
+    connection: redisConnection as any,
     concurrency: 3, // Process 3 jobs simultaneously
   }
 )
