@@ -19,8 +19,8 @@ const SettingsSchema = z.object({
   niche: z.string().optional(),
   keywords: z.array(z.string()).default([]),
   mode: z.enum(['YANDEX_MAPS', 'YANDEX_IMAGES', 'GOOGLE_MAPS', 'GEO_SEO']).default('YANDEX_MAPS'),
-  gpsLat: z.number().optional(),
-  gpsLon: z.number().optional(),
+  gpsLat: z.number().nullable().optional(),
+  gpsLon: z.number().nullable().optional(),
 })
 
 export const uploadRoutes: FastifyPluginAsync = async (app) => {
