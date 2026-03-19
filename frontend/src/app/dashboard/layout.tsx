@@ -33,7 +33,7 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
     })
       .then(r => r.ok ? r.json() : null)
       .then(data => {
-        if (data) setUser({ ...user, id: data.id, email: data.email, name: data.name, quotaUsed: data.quotaUsed })
+        if (data) setUser({ ...user, id: data.id, email: data.email, name: data.name, quotaUsed: data.quotaUsed, plan: data.plan, token: data.token })
       })
       .catch(() => {})
   }, [])
