@@ -8,7 +8,7 @@ import { SEO_MODES } from '@/lib/constants'
 import { showToast } from '@/components/ui'
 
 export function DashboardProfile() {
-  const { user, setUser, logout, updateSettings } = useStore()
+  const { user, setUser, logout, updateSettings, settings } = useStore()
   const router = useRouter()
 
   const [email,          setEmail]          = useState(user?.email ?? '')
@@ -17,10 +17,10 @@ export function DashboardProfile() {
   const [newPw,          setNewPw]          = useState('')
   const [newPw2,         setNewPw2]         = useState('')
   const [showPw,         setShowPw]         = useState(false)
-  const [defaultNiche,   setDefaultNiche]   = useState('')
-  const [defaultMode,    setDefaultMode]    = useState('YANDEX_MAPS')
-  const [defaultAuthor,  setDefaultAuthor]  = useState('')
-  const [defaultCountry, setDefaultCountry] = useState('Россия')
+  const [defaultNiche,   setDefaultNiche]   = useState(settings.niche    || '')
+  const [defaultMode,    setDefaultMode]    = useState(settings.mode      || 'YANDEX_MAPS')
+  const [defaultAuthor,  setDefaultAuthor]  = useState(settings.author    || '')
+  const [defaultCountry, setDefaultCountry] = useState(settings.country   || 'Россия')
 
   if (!user) return null
 
