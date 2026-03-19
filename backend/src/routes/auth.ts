@@ -130,4 +130,3 @@ app.patch<{ Body: { oldPassword: string; newPassword: string } }>('/password', a
   })
   return { ok: true }
 })
-}
