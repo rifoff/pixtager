@@ -9,7 +9,6 @@ function hashPassword(password: string): string {
 }
 
 function generateToken(userId: string): string {
-  // In production: use JWT with RS256. For MVP: signed HMAC token
   const payload = Buffer.from(JSON.stringify({ userId, ts: Date.now() })).toString('base64')
   const sig = crypto.createHmac('sha256', process.env.JWT_SECRET || 'dev-secret').update(payload).digest('hex')
   return `${payload}.${sig}`
@@ -21,7 +20,7 @@ export function verifyToken(token: string): { userId: string } | null {
     const expected = crypto.createHmac('sha256', process.env.JWT_SECRET || 'dev-secret').update(payload).digest('hex')
     if (sig !== expected) return null
     const data = JSON.parse(Buffer.from(payload, 'base64').toString())
-    if (Date.now() - data.ts > 30 * 24 * 60 * 60 * 1000) return null // 30 days
+    if (Date.now() - data.ts > 30 * 24 * 60 * 60 * 1000) return null
     return { userId: data.userId }
   } catch {
     return null
@@ -34,6 +33,7 @@ const RegisterSchema = z.object({
 })
 
 export const authRoutes: FastifyPluginAsync = async (app) => {
+
   app.post<{ Body: { email: string; password: string } }>('/register', async (req, reply) => {
     const parsed = RegisterSchema.safeParse(req.body)
     if (!parsed.success) return reply.code(400).send({ error: 'Некорректные данные' })
@@ -59,6 +59,8 @@ export const authRoutes: FastifyPluginAsync = async (app) => {
     }
 
     return {
+      token: generateToken(user.id),
+      userId: user.id,
       id: user.id,
       email: user.email,
       name: user.name,
@@ -69,10 +71,11 @@ export const authRoutes: FastifyPluginAsync = async (app) => {
 
   app.get('/me', async (req, reply) => {
     let userId: string | null = null
+
     const auth = req.headers.authorization
     if (auth?.startsWith('Bearer ')) {
       const payload = verifyToken(auth.slice(7))
-    if (payload) userId = payload.userId
+      if (payload) userId = payload.userId
     }
 
     if (!userId) {
@@ -93,40 +96,39 @@ export const authRoutes: FastifyPluginAsync = async (app) => {
       plan: user.plan,
       quotaUsed: user.quotaUsed,
     }
-
-  // PATCH /api/auth/profile
-app.patch<{ Body: { email?: string; name?: string } }>('/profile', async (req, reply) => {
-  const userId = req.headers['x-user-id'] as string
-  if (!userId) return reply.code(401).send({ error: 'Не авторизован' })
-
-  const { email, name } = req.body || {}
-  const user = await prisma.user.update({
-    where: { id: userId },
-    data: {
-      ...(email ? { email } : {}),
-      ...(name !== undefined ? { name } : {}),
-    },
   })
-  return { id: user.id, email: user.email, name: user.name, plan: user.plan }
-})
 
-// PATCH /api/auth/password
-app.patch<{ Body: { oldPassword: string; newPassword: string } }>('/password', async (req, reply) => {
-  const auth = req.headers.authorization
-  if (!auth?.startsWith('Bearer ')) return reply.code(401).send({ error: 'Не авторизован' })
-  const payload = verifyToken(auth.slice(7))
-  if (!payload) return reply.code(401).send({ error: 'Токен недействителен' })
+  app.patch<{ Body: { email?: string; name?: string } }>('/profile', async (req, reply) => {
+    const userId = req.headers['x-user-id'] as string
+    if (!userId) return reply.code(401).send({ error: 'Не авторизован' })
 
-  const { oldPassword, newPassword } = req.body || {}
-  const user = await prisma.user.findUnique({ where: { id: payload.userId } })
-  if (!user || user.passwordHash !== hashPassword(oldPassword)) {
-    return reply.code(401).send({ error: 'Неверный текущий пароль' })
-  }
-  if (newPassword.length < 8) return reply.code(400).send({ error: 'Пароль минимум 8 символов' })
-
-  await prisma.user.update({
-    where: { id: payload.userId },
-    data: { passwordHash: hashPassword(newPassword) },
+    const { email, name } = req.body || {}
+    const user = await prisma.user.update({
+      where: { id: userId },
+      data: {
+        ...(email ? { email } : {}),
+        ...(name !== undefined ? { name } : {}),
+      },
+    })
+    return { id: user.id, email: user.email, name: user.name, plan: user.plan }
   })
-  return { ok: true }
-})
+
+  app.patch<{ Body: { oldPassword: string; newPassword: string } }>('/password', async (req, reply) => {
+    const userId = req.headers['x-user-id'] as string
+    if (!userId) return reply.code(401).send({ error: 'Не авторизован' })
+
+    const { oldPassword, newPassword } = req.body || {}
+    const user = await prisma.user.findUnique({ where: { id: userId } })
+    if (!user || user.passwordHash !== hashPassword(oldPassword)) {
+      return reply.code(401).send({ error: 'Неверный текущий пароль' })
+    }
+    if (newPassword.length < 8) return reply.code(400).send({ error: 'Пароль минимум 8 символов' })
+
+    await prisma.user.update({
+      where: { id: userId },
+      data: { passwordHash: hashPassword(newPassword) },
+    })
+    return { ok: true }
+  })
+
+}
