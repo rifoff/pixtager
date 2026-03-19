@@ -7,9 +7,8 @@ import { uploadRoutes }  from './routes/upload.js'
 import { jobRoutes }     from './routes/jobs.js'
 import { paymentRoutes } from './routes/payments.js'
 import { authRoutes }    from './routes/auth.js'
+import { adminRoutes }   from './routes/admin.js'
 import 'dotenv/config'
-import { adminRoutes } from './routes/admin.js' 
-await app.register(adminRoutes, { prefix: '/api/admin' })
 
 const app = Fastify({
   logger: { transport: { target: 'pino-pretty' } },
@@ -28,6 +27,7 @@ await app.register(authRoutes,    { prefix: '/api/auth'     })
 await app.register(uploadRoutes,  { prefix: '/api/upload'   })
 await app.register(jobRoutes,     { prefix: '/api/jobs'     })
 await app.register(paymentRoutes, { prefix: '/api/payments' })
+await app.register(adminRoutes,   { prefix: '/api/admin'    })
 
 app.get('/health', async () => ({
   status: 'ok',

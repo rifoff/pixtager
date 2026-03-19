@@ -1,5 +1,5 @@
 // src/routes/admin.ts
-import { FastifyPluginAsync } from 'fastify'
+import { FastifyPluginAsync, FastifyRequest, FastifyReply } from 'fastify'
 import { prisma } from '../lib/prisma.js'
 
 const ADMIN_SECRET = process.env.ADMIN_SECRET || 'admin-secret-change-me'
@@ -106,7 +106,7 @@ export const adminRoutes: FastifyPluginAsync = async (app) => {
 
       const user = await prisma.user.update({
         where: { id: req.params.id },
-        data: { plan },
+        data: { plan: plan as any },
       })
 
       return { id: user.id, email: user.email, plan: user.plan }
