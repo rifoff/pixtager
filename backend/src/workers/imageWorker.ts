@@ -168,10 +168,10 @@ const worker = new Worker<ProcessJobPayload>(
       where: { id: jobId },
       data: { status: 'DONE', zipUrl, processed },
     })
-      const job = await prisma.job.findUnique({ where: { id: jobId }, select: { userId: true } })
-      if (job?.userId){
+      const dbJobUser = await prisma.job.findUnique({ where: { id: jobId }, select: { userId: true } })
+      if (dbJobUser?.userId) {
         await prisma.user.update({
-          where: { id: job.userId },  
+          where: { id: dbJobUser.userId },
           data: { quotaUsed: { increment: processed } },
         })
       }
