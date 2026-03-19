@@ -111,7 +111,7 @@ export const useStore = create<AppStore>()(
       }),
     }),
     {
-      name: 'pixtager-store',
+      name: 'pixtager-store-v2',
       partialize: (state) => ({ user: state.user, settings: state.settings }),
       storage: createJSONStorage(() => {
         if (typeof window === 'undefined') {
