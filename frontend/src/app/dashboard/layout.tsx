@@ -18,13 +18,25 @@ const NAV = [
 ]
 
 export default function DashboardLayout({ children }: { children: ReactNode }) {
-  const { user, logout } = useStore()
+  const { user, logout, setUser } = useStore()
   const router       = useRouter()
   const pathname     = usePathname()
 
   useEffect(() => {
     if (!user) router.replace('/auth')
   }, [user, router])
+
+  useEffect(() => {
+  if (!user?.token) return
+  fetch(`${process.env.NEXT_PUBLIC_API_URL || 'https://pixtager.ru/api-backend'}/auth/me`, {
+    headers: { Authorization: `Bearer ${user.token}` },
+  })
+    .then(r => r.ok ? r.json() : null)
+    .then(data => {
+      if (data) setUser({ ...user, email: data.email, name: data.name, quotaUsed: data.quotaUsed })
+    })
+    .catch(() => {})
+}, [])
 
   if (!user) return null
 
