@@ -26,18 +26,40 @@ export function DashboardProfile() {
 
   const initials = email.slice(0, 2).toUpperCase()
 
-  function saveProfile() {
+  const API = process.env.NEXT_PUBLIC_API_URL || 'https://pixtager.ru/api-backend'
+
+  async function saveProfile() {
     if (!email.trim()) return showToast('Email обязателен', 'err')
-    setUser({ ...user, email, name })
-    showToast('Профиль сохранён', 'ok')
+    const res = await fetch(`${API}/auth/profile`, {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${user.token}` },
+      body: JSON.stringify({ email, name }),
+    })
+    if (res.ok) {
+      setUser({ ...user, email, name })
+      showToast('Профиль сохранён', 'ok')
+    } else {
+      const data = await res.json()
+      showToast(data.error || 'Ошибка сохранения', 'err')
+    }
   }
 
-  function changePassword() {
+  async function changePassword() {
     if (!oldPw || !newPw || !newPw2) return showToast('Заполните все поля пароля', 'err')
     if (newPw !== newPw2) return showToast('Новые пароли не совпадают', 'err')
     if (newPw.length < 8) return showToast('Пароль минимум 8 символов', 'err')
-    setOldPw(''); setNewPw(''); setNewPw2('')
-    showToast('Пароль изменён', 'ok')
+    const res = await fetch(`${API}/auth/password`, {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${user.token}` },
+      body: JSON.stringify({ oldPassword: oldPw, newPassword: newPw }),
+    })
+    if (res.ok) {
+      setOldPw(''); setNewPw(''); setNewPw2('')
+      showToast('Пароль изменён', 'ok')
+    } else {
+      const data = await res.json()
+      showToast(data.error || 'Ошибка смены пароля', 'err')
+    }
   }
 
   function saveDefaults() {
