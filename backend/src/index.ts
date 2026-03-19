@@ -8,6 +8,8 @@ import { jobRoutes }     from './routes/jobs.js'
 import { paymentRoutes } from './routes/payments.js'
 import { authRoutes }    from './routes/auth.js'
 import 'dotenv/config'
+import { adminRoutes } from './routes/admin.js' 
+await app.register(adminRoutes, { prefix: '/api/admin' })
 
 const app = Fastify({
   logger: { transport: { target: 'pino-pretty' } },
