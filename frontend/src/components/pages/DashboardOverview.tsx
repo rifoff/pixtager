@@ -19,7 +19,10 @@ interface Job {
   processed: number
   zipUrl: string | null
   createdAt: string
-  expiresAt: string | null
+  expiresAt?: string | null
+  businessName?: string | null
+  mode?: string | null
+  niche?: string | null
   settings?: { businessName: string; mode: string; niche: string } | null
 }
 
@@ -123,10 +126,10 @@ export function DashboardOverview() {
               {jobs.slice(0, 5).map(job => (
                 <tr key={job.id} className="hover:bg-bg-3 transition-colors">
                   <td className="px-4 py-3.5 border-b border-border">
-                    <div className="text-[13px] font-medium">{job.settings?.businessName || '—'}</div>
+                    <div className="text-[13px] font-medium">{job.businessName || job.settings?.businessName || '—'}</div>
                   </td>
                   <td className="px-4 py-3.5 border-b border-border font-mono text-[13px] text-accent">{job.totalFiles}</td>
-                  <td className="px-4 py-3.5 border-b border-border text-[12px] text-txt-3">{MODE_SHORT[job.settings?.mode || ''] || '—'}</td>
+                  <td className="px-4 py-3.5 border-b border-border text-[12px] text-txt-3">{MODE_SHORT[job.mode || job.settings?.mode || ''] || '—'}</td>
                   <td className="px-4 py-3.5 border-b border-border"><StatusBadge status={job.status.toLowerCase()} /></td>
                   <td className="px-4 py-3.5 border-b border-border font-mono text-[11px] text-txt-3">{fmtDate(job.createdAt)}</td>
                   <td className="px-4 py-3.5 border-b border-border">
