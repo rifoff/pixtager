@@ -4,14 +4,19 @@ import { useEffect, useRef, useState } from 'react'
 import clsx from 'clsx'
 
 // ── LOGO ─────────────────────────────────────────────────
+import Image from 'next/image'
+
 export function Logo({ size = 'md', className }: { size?: 'sm' | 'md' | 'lg'; className?: string }) {
-  const sizes = { sm: 'text-sm', md: 'text-base', lg: 'text-xl' }
-  const dots  = { sm: 'w-1.5 h-1.5', md: 'w-2 h-2', lg: 'w-2.5 h-2.5' }
+  const sizes = { sm: 80, md: 110, lg: 140 }
   return (
-    <div className={clsx('flex items-center gap-2 font-mono font-bold tracking-tight', sizes[size], className)}>
-      <span className={clsx('rounded-full bg-accent flex-shrink-0', dots[size])} />
-      Pix<span className="text-accent">Tager</span>
-    </div>
+    <Image
+      src="/logo.svg"
+      alt="PixTager"
+      width={sizes[size]}
+      height={36}
+      className={className}
+      priority
+    />
   )
 }
 
