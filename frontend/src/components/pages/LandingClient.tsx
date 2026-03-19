@@ -1,6 +1,7 @@
 'use client'
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
+import Image from 'next/image'
 
 interface Props {
   navLinks: string[][]
@@ -34,11 +35,9 @@ export function LandingClient({ navLinks }: Props) {
           backdropFilter: 'blur(16px)',
         }}
       >
-        <div className="flex items-center gap-2 font-mono text-[15px] font-bold">
-          <span className="w-2 h-2 rounded-full bg-accent animate-pulse" style={{animationDuration:'2s'}} />
-          Pix<span className="text-accent">Tager</span>
-        </div>
 
+        <Image src="/logo.svg" alt="PixTager" width={110} height={36} priority />
+    
         {/* Desktop nav */}
         <div className="hidden md:flex items-center gap-1">
           {navLinks.map(([href, label]) => (
