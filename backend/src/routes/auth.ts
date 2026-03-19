@@ -59,8 +59,8 @@ export const authRoutes: FastifyPluginAsync = async (app) => {
     }
 
     return {
-      token: generateToken(user.id),
-      userId: user.id,
+      id: user.id,
+      email: user.email,
       name: user.name,
       plan: user.plan,
       quotaUsed: user.quotaUsed,
@@ -79,6 +79,7 @@ export const authRoutes: FastifyPluginAsync = async (app) => {
     return {
       id: user.id,
       email: user.email,
+      name: user.name,
       plan: user.plan,
       quotaUsed: user.quotaUsed,
     }
