@@ -92,17 +92,15 @@ export const authRoutes: FastifyPluginAsync = async (app) => {
       quotaUsed: user.quotaUsed,
     }
   })
-  
+
   // PATCH /api/auth/profile
 app.patch<{ Body: { email?: string; name?: string } }>('/profile', async (req, reply) => {
-  const auth = req.headers.authorization
-  if (!auth?.startsWith('Bearer ')) return reply.code(401).send({ error: 'Не авторизован' })
-  const payload = verifyToken(auth.slice(7))
-  if (!payload) return reply.code(401).send({ error: 'Токен недействителен' })
+  const userId = req.headers['x-user-id'] as string
+  if (!userId) return reply.code(401).send({ error: 'Не авторизован' })
 
   const { email, name } = req.body || {}
   const user = await prisma.user.update({
-    where: { id: payload.userId },
+    where: { id: userId },
     data: {
       ...(email ? { email } : {}),
       ...(name !== undefined ? { name } : {}),

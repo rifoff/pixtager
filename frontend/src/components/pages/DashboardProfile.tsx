@@ -32,7 +32,7 @@ export function DashboardProfile() {
     if (!email.trim()) return showToast('Email обязателен', 'err')
     const res = await fetch(`${API}/auth/profile`, {
       method: 'PATCH',
-      headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${user.token}` },
+      headers: { 'Content-Type': 'application/json', 'x-user-id': user.id },
       body: JSON.stringify({ email, name }),
     })
     if (res.ok) {
