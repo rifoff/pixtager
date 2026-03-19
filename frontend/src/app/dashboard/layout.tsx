@@ -1,5 +1,5 @@
 'use client'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import type { ReactNode } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
@@ -8,7 +8,6 @@ import { useStore } from '@/lib/store'
 import clsx from 'clsx'
 import Image from 'next/image'
 import { ToastProvider } from '@/components/ui'
-
 
 const NAV = [
   { href: '/dashboard',         icon: '◆', label: 'Обзор'         },
@@ -19,12 +18,17 @@ const NAV = [
 
 export default function DashboardLayout({ children }: { children: ReactNode }) {
   const { user, logout, setUser } = useStore()
-  const router       = useRouter()
-  const pathname     = usePathname()
+  const router   = useRouter()
+  const pathname = usePathname()
+  const [hydrated, setHydrated] = useState(false)
 
   useEffect(() => {
-    if (!user) router.replace('/auth')
-  }, [user, router])
+    setHydrated(true)
+  }, [])
+
+  useEffect(() => {
+    if (hydrated && !user) router.replace('/auth')
+  }, [user, router, hydrated])
 
   useEffect(() => {
     if (!user?.id) return
@@ -38,6 +42,7 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
       .catch(() => {})
   }, [])
 
+  if (!hydrated) return null
   if (!user) return null
 
   const initials = user.email.slice(0, 2).toUpperCase()
@@ -48,7 +53,7 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
       {/* Top bar */}
       <header className="sticky top-0 z-50 flex items-center justify-between px-6 h-[52px] border-b border-border bg-bg/90 backdrop-blur-xl">
         <Link href="/">
-        <Image src="/logo.svg" alt="PixTager" width={110} height={36} priority />
+          <Image src="/logo.svg" alt="PixTager" width={110} height={36} priority />
         </Link>
         <div className="flex items-center gap-3">
           <div className="flex items-center gap-2.5 bg-bg-2 border border-border rounded-lg px-3 py-1.5">
