@@ -7,6 +7,8 @@ import { AppSettings } from './AppSettings'
 import { AppProcess }  from './AppProcess'
 import { AppDownload } from './AppDownload'
 import clsx from 'clsx'
+import Image from 'next/image'
+
 
 const STEPS = [
   { id: 'upload',   label: 'Загрузка'      },
@@ -38,7 +40,7 @@ export function AppShell() {
           <Link href="/dashboard" className="text-txt-2 hover:text-txt transition-colors text-sm flex items-center gap-1.5 border border-border px-3 py-1.5 rounded-lg hover:border-border-2">
             ← Кабинет
           </Link>
-          <span className="font-bold text-txt">● Pix<span className="font-light">Tager</span></span>
+          <Image src="/logo.svg" alt="PixTager" width={110} height={36} priority />
         </div>
         <div className="flex items-center gap-3">
           <div className="hidden sm:flex flex-col items-end gap-0.5">
