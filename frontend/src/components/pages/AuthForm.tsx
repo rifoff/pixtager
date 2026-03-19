@@ -55,7 +55,7 @@ async function submit() {
     const data = await res.json()
     if (!res.ok) return showToast(data.error || 'Ошибка', 'err')
     localStorage.setItem('token', data.token)
-    setUser({ id: data.userId, email, plan: data.plan, quotaUsed: data.quotaUsed ?? 0, token: data.token })
+    setUser({ id: data.userId || data.id, email, name: data.name, plan: data.plan, quotaUsed: data.quotaUsed ?? 0, token: data.token })
     showToast(tab === 'login' ? 'Добро пожаловать!' : 'Аккаунт создан! 🎉', 'ok')
     router.push('/dashboard')
   } catch {
