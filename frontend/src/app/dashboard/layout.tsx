@@ -31,8 +31,8 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
     fetch(`${process.env.NEXT_PUBLIC_API_URL || 'https://pixtager.ru/api-backend'}/auth/me`, {
       headers: { Authorization: `Bearer ${user.token}` },
     })
-      .then(r => {
-        if (r.status === 401) return null  // не вылетать, просто игнорировать
+       .then(r => {
+        if (r.status === 401) { logout(); router.replace('/auth'); return null }
         return r.ok ? r.json() : null
       })
       .then(data => {
