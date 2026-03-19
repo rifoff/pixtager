@@ -85,13 +85,14 @@ export const authRoutes: FastifyPluginAsync = async (app) => {
     if (!user) return reply.code(404).send({ error: 'Пользователь не найден' })
 
     return {
+      token: generateToken(user.id),
+      userId: user.id,
       id: user.id,
       email: user.email,
       name: user.name,
       plan: user.plan,
       quotaUsed: user.quotaUsed,
     }
-  })
 
   // PATCH /api/auth/profile
 app.patch<{ Body: { email?: string; name?: string } }>('/profile', async (req, reply) => {
