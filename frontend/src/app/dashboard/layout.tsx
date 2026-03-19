@@ -6,6 +6,8 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useStore } from '@/lib/store'
 import clsx from 'clsx'
+import Image from 'next/image'
+
 
 const NAV = [
   { href: '/dashboard',         icon: '◆', label: 'Обзор'         },
@@ -32,7 +34,9 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
 
       {/* Top bar */}
       <header className="sticky top-0 z-50 flex items-center justify-between px-6 h-[52px] border-b border-border bg-bg/90 backdrop-blur-xl">
-        <Link href="/" className="font-display font-semibold text-sm tracking-tight">PixTager</Link>
+        <Link href="/">
+        <Image src="/logo.svg" alt="PixTager" width={110} height={36} priority />
+        </Link>
         <div className="flex items-center gap-3">
           <div className="flex items-center gap-2.5 bg-bg-2 border border-border rounded-lg px-3 py-1.5">
             <div className="w-7 h-7 rounded-full bg-accent/10 border border-accent/25 flex items-center justify-center font-mono text-[10px] text-accent">
