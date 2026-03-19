@@ -7,6 +7,7 @@ import { usePathname } from 'next/navigation'
 import { useStore } from '@/lib/store'
 import clsx from 'clsx'
 import Image from 'next/image'
+import { ToastProvider } from '@/components/ui'
 
 
 const NAV = [
@@ -83,6 +84,7 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
 
         {/* Main */}
         <main className="flex-1 overflow-y-auto px-8 py-8 bg-bg">
+          <ToastProvider />
           {children}
         </main>
       </div>

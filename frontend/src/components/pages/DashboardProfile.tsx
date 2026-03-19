@@ -8,7 +8,7 @@ import { SEO_MODES } from '@/lib/constants'
 import { showToast } from '@/components/ui'
 
 export function DashboardProfile() {
-  const { user, setUser, logout } = useStore()
+  const { user, setUser, logout, updateSettings } = useStore()
   const router = useRouter()
 
   const [email,          setEmail]          = useState(user?.email ?? '')
@@ -63,8 +63,14 @@ export function DashboardProfile() {
   }
 
   function saveDefaults() {
-    showToast('Настройки по умолчанию сохранены', 'ok')
-  }
+  updateSettings({
+    niche: defaultNiche,
+    mode: defaultMode as any,
+    author: defaultAuthor,
+    country: defaultCountry,
+  })
+  showToast('Настройки по умолчанию сохранены', 'ok')
+}
 
   function deleteAccount() {
     if (!confirm('Удалить аккаунт безвозвратно? Все данные и история будут потеряны.')) return
