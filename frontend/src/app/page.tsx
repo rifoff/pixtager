@@ -60,7 +60,7 @@ export default function LandingPage() {
           </div>
           <h1 className="font-display text-[clamp(22px,3.5vw,48px)] font-black leading-[1.05] tracking-[-0.04em] mb-6">
             SEO для изображений — больше трафика
-            <span style={{backgroundImage:'linear-gradient(135deg,#e8b44a 0%,#f5d78e 50%,#e8b44a 100%)',WebkitBackgroundClip:'text',WebkitTextFillColor:'transparent',backgroundClip:'text'}}> с сайтов и геосервисов</span>
+            <span style={{backgroundImage:'linear-gradient(135deg,#e8b44a 0%,#f5d78e 50%,#e8b44a 100%)',WebkitBackgroundClip:'text',WebkitTextFillColor:'transparent',backgroundClip:'text'}}><br />с сайтов и геосервисов</span>
           </h1>
           <p className="text-[clamp(14px,1.6vw,17px)] text-txt-2 font-light leading-relaxed max-w-2xl mx-auto mb-10">
             Прошивайте метаданные в сотни фото автоматически и выводите их в поиск Google, Яндекс и в топы ГЕО-Сервисов.
