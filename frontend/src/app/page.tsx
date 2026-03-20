@@ -4,6 +4,7 @@ import Link from 'next/link'
 import { LandingNicheDemo } from '@/components/pages/LandingNicheDemo'
 import { LandingFaq } from '@/components/pages/LandingFaq'
 import { LandingClient } from '@/components/pages/LandingClient'
+import Image from 'next/image'
 
 const HOW_STEPS = [
   { n: '01', title: 'Загрузите фотографии', body: 'Drag & drop до 5 000 фото. JPG, JPEG, PNG до 15 МБ. Пакетная загрузка без ограничений на Agency-тарифе.' },
@@ -230,15 +231,15 @@ export default function LandingPage() {
 
       {/* FOOTER */}
       <footer className="flex items-center justify-between px-5 sm:px-10 py-8 border-t border-border bg-bg-2 text-[12px] text-txt-3 flex-wrap gap-4">
-        <div className="flex items-center gap-2 font-mono font-bold text-[13px] text-txt-2">
-          <span className="w-1.5 h-1.5 rounded-full bg-accent" />Pix<span className="text-accent">Tager</span>
+        <div>
+          <Image src="/logo.svg" alt="PixTager" width={90} height={30} />
         </div>
         <div className="flex gap-4 flex-wrap">
-          <a href="#" className="hover:text-txt-2 transition-colors">Политика конфиденциальности</a>
-          <a href="#" className="hover:text-txt-2 transition-colors">Оферта</a>
-          <a href="#" className="hover:text-txt-2 transition-colors">Поддержка</a>
+          <a href="/privacy" className="hover:text-txt-2 transition-colors">Политика конфиденциальности</a>
+          <a href="/oferta" className="hover:text-txt-2 transition-colors">Оферта</a>
+          <a href="mailto:pixtager@mail.ru" className="hover:text-txt-2 transition-colors">Поддержка</a>
         </div>
-        <div>© 2025 PixTager · Данные хранятся в РФ</div>
+        <div>© 2025 PixTager</div>
       </footer>
     </>
   )
