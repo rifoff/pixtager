@@ -7,38 +7,38 @@ import { LandingClient } from '@/components/pages/LandingClient'
 import Image from 'next/image'
 
 const HOW_STEPS = [
-  { n: '01', title: 'Загрузите фотографии', body: 'Drag & drop до 5 000 фото. JPG, JPEG, PNG до 15 МБ. Пакетная загрузка без ограничений на Agency-тарифе.' },
-  { n: '02', title: 'Настройте SEO-параметры', body: 'Выберите нишу — ключевые слова загрузятся автоматически. Введите адрес — GPS определятся через Яндекс Геокодер.' },
-  { n: '03', title: 'Выберите режим', body: 'Яндекс Карты, Яндекс Картинки, Google Maps или GEO SEO. Каждый режим оптимизирует разные поля метаданных.' },
-  { n: '04', title: 'Скачайте ZIP-архив', body: 'Переименованные файлы + прошитые метаданные + HTML-отчёт + CSV. Ссылка действует 24 часа.' },
+  { n: '01', title: 'Загрузите фотографии', body: 'До 5 000 фото. JPG, JPEG, PNG до 15 МБ. Пакетная загрузка без ограничений на тарифе Агентство.' },
+  { n: '02', title: 'Настройте параметры', body: 'Выберите нишу — ключевые слова загрузятся автоматически. Введите адрес — GPS определятся через Яндекс Геокодер.' },
+  { n: '03', title: 'Выберите режим', body: 'Яндекс Карты, Яндекс Картинки, Гугл Карты. Каждый режим оптимизирует разные поля метаданных.' },
+  { n: '04', title: 'Скачайте ЗИП-архив', body: 'Переименованные файлы + прошитые метаданные + отчёт + таблица. Ссылка действует 24 часа.' },
 ]
 
 const FEATURES = [
-  { icon: '📍', title: 'GPS в EXIF автоматически', body: 'Вводите адрес — Яндекс Геокодер конвертирует в координаты и записывает GPSLatitude / Longitude.' },
-  { icon: '🏷', title: 'IPTC + XMP метаданные', body: 'Title, Description, Keywords, Author, Copyright, City, Country — все поля в один клик.' },
+  { icon: '📍', title: 'GPS в EXIF автоматически', body: 'Вводите адрес — Яндекс Геокодер конвертирует в координаты.' },
+  { icon: '🏷', title: 'IPTC + XMP метаданные', body: 'Заголовок, Описание, Ключевые слова, Автор, Авторское право, Город, Страна — все поля в один клик.' },
   { icon: '📂', title: 'SEO-имя файла', body: 'IMG_3345.jpg → stomatologiya-moskva.jpg. Транслитерация + ниша + город + уникальный slug.' },
   { icon: '⚡', title: 'Шаблоны 9 ниш', body: 'Стоматология, косметология, недвижимость, ресторан и др. Кириллица + латиница.' },
-  { icon: '🗺', title: 'GEO SEO генератор', body: 'Автоварианты: «ниша Город», «лучший ниша Город», «ниша рядом Город».' },
-  { icon: '📦', title: 'ZIP + HTML-отчёт', body: 'Архив с переименованными фото, HTML-отчётом и CSV-таблицей для Excel.' },
+  { icon: '🗺', title: 'ГЕО SEO генератор', body: 'Автоварианты: «ниша Город», «лучший ниша Город», «ниша рядом Город».' },
+  { icon: '📦', title: 'ЗИП + HTML-отчёт', body: 'Архив с переименованными фото, HTML-отчётом и таблицей для Эксель.' },
 ]
 
 const MODES = [
-  { key: 'ЯНДЕКС КАРТЫ',    title: 'Яндекс Карты',    desc: 'GPS в EXIF, кириллические ключевые слова, точный адрес в Location. Фокус на локальный поиск.', pro: false },
-  { key: 'ЯНДЕКС КАРТИНКИ', title: 'Яндекс Картинки', desc: 'Расширенный ALT-тег, Description 160 символов, до 15 ключевых слов.', pro: false },
-  { key: 'GOOGLE MAPS',     title: 'Google Maps',      desc: 'Ключевые слова на английском, Plus Code, латинский транслит.', pro: false },
-  { key: 'GEO SEO',         title: 'GEO SEO',          desc: 'Автогенерация вариантов: «Ниша Город», «лучший Ниша Город», «Ниша рядом Город».', pro: true },
+  { key: 'ЯНДЕКС КАРТЫ',    title: 'Яндекс Карты',    desc: 'GPS в EXIF, кириллические ключевые слова, точный адрес. Фокус на локальный поиск.', pro: false },
+  { key: 'ЯНДЕКС КАРТИНКИ', title: 'Яндекс Картинки', desc: 'Расширенный Альт-тег, Описание 160 символов, до 15 ключевых слов.', pro: false },
+  { key: 'ГУГЛ КАРТЫ',     title: 'Гугл Карты',      desc: 'Ключевые слова на английском, латинский транслит.', pro: false },
+  { key: 'ГЕО SEO',         title: 'ГЕО SEO',          desc: 'Автогенерация вариантов: «Ниша Город», «лучший Ниша Город», «Ниша рядом Город».', pro: true },
 ]
 
 const PLANS = [
-  { key: 'FREE',    name: 'Бесплатный', price: '0 ₽',     period: 'навсегда', popular: false, yes: ['10 фото / месяц','1 шаблон ниши','IPTC-метаданные','GPS в EXIF','SEO-имя файла'], no: ['GEO SEO','Пакетная обработка','API'], cta: 'Начать бесплатно' },
-  { key: 'STARTER', name: 'Старт',      price: '890 ₽',   period: 'в месяц',  popular: false, yes: ['100 фото / месяц','Все 9 ниш','ALT-теги','Яндекс + Google','CSV-отчёт'], no: ['GEO SEO','CSV-импорт','API'], cta: 'Подключить' },
-  { key: 'PRO',     name: 'Про',        price: '2 490 ₽', period: 'в месяц',  popular: true,  yes: ['1 000 фото / месяц','GEO SEO режим','Все 4 режима','Пакетная обработка','CSV-отчёт'], no: ['CSV-импорт','API'], cta: 'Подключить' },
-  { key: 'AGENCY',  name: 'Агентство',  price: '6 900 ₽', period: 'в месяц',  popular: false, yes: ['5 000+ фото / месяц','Все режимы','CSV-импорт','API-доступ','White-label ZIP','Приоритетная поддержка'], no: [], cta: 'Подключить' },
+  { key: 'FREE',    name: 'Бесплатный', price: '0 ₽',     period: 'навсегда', popular: false, yes: ['10 фото / месяц','1 шаблон ниши','IPTC-метаданные','GPS в EXIF','SEO-имя файла'], no: ['ГЕО SEO','Пакетная обработка','API'], cta: 'Начать бесплатно' },
+  { key: 'STARTER', name: 'Старт',      price: '890 ₽',   period: 'в месяц',  popular: false, yes: ['100 фото / месяц','Все 9 ниш','АЛЬТ-теги','Яндекс + Гугл','Отчёт'], no: ['ГЕО SEO','Импорт','API'], cta: 'Подключить' },
+  { key: 'PRO',     name: 'Про',        price: '2 490 ₽', period: 'в месяц',  popular: true,  yes: ['1 000 фото / месяц','ГЕО SEO режим','Все 4 режима','Пакетная обработка','Отчёт'], no: ['Импорт','API'], cta: 'Подключить' },
+  { key: 'AGENCY',  name: 'Агентство',  price: '6 900 ₽', period: 'в месяц',  popular: false, yes: ['5 000+ фото / месяц','Все режимы','Импорт','API-доступ','Вайт-лейбл ЗИП','Приоритетная поддержка'], no: [], cta: 'Подключить' },
 ]
 
-const BEFORE_ROWS = [['Имя файла','IMG_3345.jpg'],['IPTC Title','—'],['IPTC Keywords','—'],['GPS координаты','—'],['ALT тег','—']]
-const AFTER_ROWS  = [['Имя файла','stomatologiya-moskva.jpg'],['IPTC Title','Стоматология Улыбка'],['IPTC Keywords','стоматология, дентист…'],['GPS координаты','55.7558°, 37.6176°'],['ALT тег','Стоматология в Москве']]
-const MARQUEE     = ['IPTC Keywords','GPS в EXIF','Яндекс Карты','Яндекс Картинки','Google Maps','GEO SEO','SEO-имя файла','ALT-теги','ZIP-архив','XMP метаданные','152-ФЗ','Т-Банк оплата']
+const BEFORE_ROWS = [['Имя файла','IMG_3345.jpg'],['IPTC заголовок','—'],['IPTC ключи','—'],['GPS координаты','—'],['АЛЬТ-тег','—']]
+const AFTER_ROWS  = [['Имя файла','stomatologiya-moskva.jpg'],['IPTC заголовок','Стоматология Улыбка'],['IPTC ключи','стоматология, дентист…'],['GPS координаты','55.7558°, 37.6176°'],['АЛЬТ-тег','Стоматология в Москве']]
+const MARQUEE     = ['IPTC ключи','GPS в EXIF','Яндекс Карты','Яндекс Картинки','Гугл Карты','ГЕО SEO','SEO-имя файла','АЛЬТ-теги','ЗИП-архив','XMP метаданные','152-ФЗ','Т-Банк оплата']
 const NAV_LINKS   = [['#how','Как работает'],['#features','Возможности'],['#pricing','Тарифы'],['#faq','FAQ']]
 
 export default function LandingPage() {
@@ -139,7 +139,7 @@ export default function LandingPage() {
       <section id="features" className="bg-bg-2 border-y border-border px-5 sm:px-10 py-24">
         <div className="font-mono text-[11px] font-bold uppercase tracking-[.12em] text-accent mb-4">Возможности</div>
         <h2 className="font-display text-[clamp(24px,4vw,42px)] font-bold tracking-tight mb-4">Всё для локального SEO</h2>
-        <p className="text-txt-2 text-base mb-14 max-w-lg">Один инструмент заменяет Photoshop, ExifTool и часы ручной работы.</p>
+        <p className="text-txt-2 text-base mb-14 max-w-lg">Один инструмент заменяет Фотошоп, ЭкзифТулс и часы ручной работы.</p>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {FEATURES.map((f) => (
             <div key={f.title} className="bg-bg border border-border rounded-xl p-6 hover:border-accent/30 hover:-translate-y-1 hover:shadow-[0_8px_32px_rgba(232,180,74,0.08)] transition-all duration-300 group">
@@ -179,7 +179,7 @@ export default function LandingPage() {
       <section id="pricing" className="bg-bg-2 border-y border-border px-5 sm:px-10 py-24">
         <div className="font-mono text-[11px] font-bold uppercase tracking-[.12em] text-accent mb-4">Тарифы</div>
         <h2 className="font-display text-[clamp(24px,4vw,42px)] font-bold tracking-tight mb-3">Простые цены для любого масштаба</h2>
-        <p className="text-txt-2 text-base mb-14">Оплата через Т-Банк. Рекуррентные платежи, отмена в любой момент.</p>
+        <p className="text-txt-2 text-base mb-14">Оплата через любой банк/СБП. Рекуррентные платежи, отмена в любой момент.</p>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
           {PLANS.map((plan) => (
             <div key={plan.key} className={`relative flex flex-col rounded-xl p-5 border transition-all duration-300 hover:-translate-y-1 ${plan.popular ? 'border-accent/40 hover:border-accent/60 hover:shadow-[0_16px_48px_rgba(232,180,74,0.12)]' : 'border-border bg-bg hover:border-border-2'}`} style={plan.popular ? {background:'rgba(232,180,74,0.025)'} : {}}>
@@ -212,7 +212,7 @@ export default function LandingPage() {
       {/* FAQ */}
       <section id="faq" className="px-5 sm:px-10 py-24">
         <div className="text-center mb-12">
-          <div className="font-mono text-[11px] font-bold uppercase tracking-[.12em] text-accent mb-4 inline-block">FAQ</div>
+          <div className="font-mono text-[11px] font-bold uppercase tracking-[.12em] text-accent mb-4 inline-block">ЧаВо</div>
           <h2 className="font-display text-[clamp(24px,4vw,42px)] font-bold tracking-tight">Частые вопросы</h2>
         </div>
         <LandingFaq />
